@@ -1,8 +1,7 @@
-import { Container,Box,Breadcrumbs,Link } from '@mui/material'
+import { Container,Box,Breadcrumbs,Link,Stack,Avatar } from '@mui/material'
 import React from 'react'
 import Card from '@mui/material/Card'; 
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 const BlogCard = () => {
@@ -49,7 +48,29 @@ const BlogCard = () => {
           Lizards are a widespread group of squamate reptiles, with over 6,000
           species, ranging across all continents except Antarctica.Lizards are a widespread group of squamate reptiles, with over 6,000
           species, ranging across all continents except Antarctica
-        </Typography>
+          </Typography>
+          <div style={{display:'flex',justifyContent:'space-between',marginTop:"20px"}} >
+          <Stack direction="row" spacing={1}> 
+              <Button  sx={{fontSize:"12px",fontFamily:"Josefin Sans",fontWeight:400}} size="small" color="error" variant="contained">#Tech</Button>
+              <Button  sx={{fontSize:"12px",fontFamily:"Josefin Sans",fontWeight:400,'&:hover':{color:"#4B4870 !important"}}} size="small" color="white" variant="contained">#Development</Button>
+              <Button  sx={{fontSize:"12px",fontFamily:"Josefin Sans",fontWeight:400,'&:hover':{color:"#4B4870 !important"}}} size="small" color="primary" variant="contained">#Latest</Button>
+            </Stack>
+            <Stack alignItems={"center"} direction="row" spacing={1}>
+              <Avatar alt="Remy Sharp" src="https://mui.com/static/images/avatar/1.jpg" />
+              <Typography fontFamily={"Josefin Sans"} variant="span" component="span">
+  tarikul Islam.
+</Typography>
+            </Stack>
+          </div>
+
+          <Stack mt={10}
+  direction="row"
+  justifyContent="center"
+  alignItems="flex-end"
+  spacing={1}
+>
+          <Button  sx={{fontFamily:"Josefin Sans",fontWeight:500,margin:"auto"}}  size="large" color="info" variant="contained">Continue Reading</Button>
+          </Stack>
       </CardContent> 
     </Card>
     </Container>
