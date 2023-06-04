@@ -1,6 +1,11 @@
+import "./assets/style/main.css"
+import { BrowserRouter } from "react-router-dom";
+import Router from "./pages/router";
 function App() {
   return (
-  <h1>App</h1>
+    <BrowserRouter> 
+                <Router/>
+    </BrowserRouter>
   );
 }
 
