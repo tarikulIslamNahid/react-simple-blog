@@ -3,3 +3,16 @@
     margin: 0px;
     box-sizing: border-box;
 }
+body{
+    background-color: #f9f9fe;
+}
+ .ll{
+    padding-bottom: 5px;
+     background-image: linear-gradient(to right,#65ebe7 0%,#65ebe7 100%);
+    background-size: 100% 0%;
+    background-repeat: no-repeat;
+    background-position: left 70%;
+    -webkit-transition: all .4s ease;
+    -o-transition: all .4s ease;
+    transition: all .4s ease;
+ }
