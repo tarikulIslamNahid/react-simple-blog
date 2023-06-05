@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,20 +9,41 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import BaseLayout from '../Layouts/BaseLayout';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 const Register = () => {
-  const handleSubmit = (event) => {
+  const [FirstName, SetFirstName ] = useState('');
+  const [LastName, SetLastName ] = useState('');
+  const [password, SetPassword ] = useState('');
+  const [email, SetEmail ] = useState('');
+  const [agree, SetAgree] = useState(false);
+  const navigate = useNavigate();
+  const handleSubmit =async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      firstName: data.get('firstName'),
-      lastName: data.get('lastName'),
-      agree: data.get('agree'),
-    });
+    await fetch('http://localhost:8082/register', {
+      method: "POST",
+      headers:{'Content-Type':"application/json"},
+      body: JSON.stringify({FirstName,LastName,email,password,agree})
+    })
+      .then((res) => {
+        console.log(res)
+        if (res.status === 200) {
+          toast.success('registration successful!');
+          navigate("/login");
+        } else {
+          toast.error('registration failed!');
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error('registration failed!');
+    })
+    
   };
-
+  const handleAgree = (event) => {
+    SetAgree(event.target.checked)
+  };
   return (
     <BaseLayout>
       <Container component="main" maxWidth="xs">
@@ -42,6 +63,8 @@ const Register = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  value={FirstName}
+                  onChange={e=>SetFirstName(e.target.value)}
                   autoComplete="given-name"
                   name="firstName"
                   required
@@ -53,6 +76,8 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  value={LastName}
+                  onChange={e=>SetLastName(e.target.value)}
                   required
                   fullWidth
                   id="lastName"
@@ -63,6 +88,8 @@ const Register = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  value={email}
+                  onChange={e=>SetEmail(e.target.value)}
                   required
                   fullWidth
                   id="email"
@@ -73,6 +100,8 @@ const Register = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  value={password}
+                  onChange={e=>SetPassword(e.target.value)}
                   required
                   fullWidth
                   name="password"
@@ -84,7 +113,8 @@ const Register = () => {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox name='agree' color="primary" />}
+                  control={<Checkbox  checked={agree[0] && agree[1]}
+                  indeterminate={agree[0] !== agree[1]} onChange={e=>handleAgree(e)} name='agree' color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
