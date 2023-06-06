@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  {useState} from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -11,21 +11,42 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BaseLayout from '../Layouts/BaseLayout';
 import { Link} from 'react-router-dom';
-
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
  
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
-const  Login = () => {
-  const handleSubmit = (event) => {
+const Login = () => {
+  const [password, SetPassword ] = useState('');
+  const [email, SetEmail] = useState('');
+  const navigate = useNavigate();
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    
+    await fetch('http://localhost:8082/login', {
+      method: "POST",
+      body: JSON.stringify({email,password}),
+      headers: { 'Content-Type': "application/json" },
+      credentials:'include',
+    })
+      .then((res) => {
+        if (res.ok) {
+          toast.success('login successfully!');
+          navigate("/");
+        } else {
+          toast.error('login failed!');
+        }
+      })
+      .catch((err) => {
+        toast.error('login failed!');
+
+        console.log(err,'err')
+    })
+
   };
 
   return (
@@ -50,7 +71,9 @@ const  Login = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
+                id="email"
+                value={email}
+                  onChange={e=>SetEmail(e.target.value)}
               label="Email Address"
               name="email"
               autoComplete="email"
@@ -59,7 +82,9 @@ const  Login = () => {
             <TextField
               margin="normal"
               required
-              fullWidth
+                fullWidth
+                value={password}
+                  onChange={e=>SetPassword(e.target.value)}
               name="password"
               label="Password"
               type="password"
