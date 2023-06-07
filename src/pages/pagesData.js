@@ -2,6 +2,7 @@
 import Login from "./Login";
 import Home from "./Home";
 import Register from "./Register";
+import BlogCreate from "./BlogCreate";
 
 
 const pagesData = [
@@ -21,6 +22,12 @@ const pagesData = [
       path: "/register",
       element: <Register />,
       title: "Register",
+      index:false
+    },
+    {
+      path: "/blog/create",
+      element: <BlogCreate />,
+      title: "Create New",
       index:false
     }
   ];

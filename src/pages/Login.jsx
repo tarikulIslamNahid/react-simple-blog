@@ -1,4 +1,4 @@
-import  {useContext, useState} from 'react';
+import  {useContext, useState,useEffect} from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -24,8 +24,18 @@ const Login = () => {
   const [password, SetPassword ] = useState('');
   const [email, SetEmail] = useState('');
   const navigate = useNavigate();
-  const {setUserInfo} = useContext(UserContext);
+  const {setUserInfo,userInfo} = useContext(UserContext);
   
+  useEffect(() => {
+    checkAuth();
+   
+  });
+  const checkAuth = async () => {
+    if (await userInfo != null) {
+      navigate("/");
+      
+    }
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     

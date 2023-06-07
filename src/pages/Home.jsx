@@ -5,8 +5,7 @@ import BlogCard from '../components/BlogCard'
 const Home = () => {
   return (
     <BaseLayout>
-     <BlogCard/>
-     <BlogCard/>
+     <BlogCard/> 
     </BaseLayout>
   )
 }

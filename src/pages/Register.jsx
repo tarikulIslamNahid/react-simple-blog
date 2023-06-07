@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -12,6 +12,7 @@ import BaseLayout from '../Layouts/BaseLayout';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../UserContext';
 const Register = () => {
   const [FirstName, SetFirstName ] = useState('');
   const [LastName, SetLastName ] = useState('');
@@ -19,6 +20,18 @@ const Register = () => {
   const [email, SetEmail ] = useState('');
   const [agree, SetAgree] = useState(false);
   const navigate = useNavigate();
+  const { userInfo } = useContext(UserContext);
+  
+  useEffect(() => {
+    checkAuth();
+   
+  });
+  const checkAuth = async () => {
+    if (await userInfo != null) {
+      navigate("/");
+      
+    }
+  }
   const handleSubmit =async (event) => {
     event.preventDefault();
     await fetch('http://localhost:8082/register', {

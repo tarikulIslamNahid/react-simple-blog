@@ -54,7 +54,7 @@ const Header = () => {
         {
             title: "Create New",
             auth:true,
-            link:<Link style={{color:"#2b2b2b",textDecoration:"none"}} to="/login">Create New</Link>
+            link:<Link style={{color:"#2b2b2b",textDecoration:"none"}} to="/blog/create">Create New</Link>
         },
         {
             title: "Logout",
