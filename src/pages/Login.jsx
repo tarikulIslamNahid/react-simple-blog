@@ -34,8 +34,12 @@ const Login = () => {
       credentials:'include',
     })
       .then((res) => {
+        console.log( res)
+      
         if (res.ok) {
-          toast.success('login successfully!');
+          res.json().then(info => {
+            toast.success(info);
+          })
           navigate("/");
         } else {
           toast.error('login failed!');

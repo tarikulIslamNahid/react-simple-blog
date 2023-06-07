@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,17 +10,53 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { toast } from 'react-toastify';
 import { Link} from 'react-router-dom';
 
 const Header = () => {
+  const [userEmail, setUserEmail] = useState(null);
+   useEffect(() => {
+    fetch('http://localhost:8082/profile', {
+      credentials:"include"
+    })
+      .then((res) => {
+        res.json().then(info => {
+          setUserEmail(info.email)
+     })
+   })
+   }, []);
+  const Logout = () => {
+    fetch("http://localhost:8082/logout", {
+      credentials: "include",
+      method:"POST"
+    })
+      .then((res) => {
+        setUserEmail(null)
+        toast.success("logout successfully!");
+
+    })
+  }
+  
     const pages = [
         {
             title: "Register",
+            auth:false,
             link:<Link style={{color:"#2b2b2b",textDecoration:"none"}} color='#fff' to="/register">Register</Link>
         },
         {
             title: "Login",
+            auth:false,
             link:<Link style={{color:"#2b2b2b",textDecoration:"none"}} to="/login">Login</Link>
+        },
+        {
+            title: "Create New",
+            auth:true,
+            link:<Link style={{color:"#2b2b2b",textDecoration:"none"}} to="/login">Create New</Link>
+        },
+        {
+            title: "Logout",
+            auth:true,
+            link:<Link style={{color:"#2b2b2b",textDecoration:"none"}} onClick={Logout}>Logout</Link>
         },
     ];
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -86,7 +122,7 @@ const Header = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
+                  {pages.map((page) => (
                 <MenuItem key={page.title} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page.link}</Typography>
                 </MenuItem>
@@ -113,15 +149,26 @@ const Header = () => {
             LOGO
           </Typography>
           <Box justifyContent={"end"} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-                <Button
-                key={page.title}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page.link}
-              </Button>
-            ))}
+                {pages.map((page,index) => {
+                  if (userEmail!= null && page.auth) {
+                    return   <Button
+                    key={index}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    {page.link}
+                  </Button>
+                  } else if(!userEmail && !page.auth){
+                    return   <Button
+                    key={index}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    {page.link}
+                  </Button>
+                  }
+                
+                })}
           </Box>
         </Toolbar>
       </Container>
