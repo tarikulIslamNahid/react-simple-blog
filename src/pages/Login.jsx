@@ -1,4 +1,4 @@
-import  {useState} from 'react';
+import  {useContext, useState} from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -13,6 +13,7 @@ import BaseLayout from '../Layouts/BaseLayout';
 import { Link} from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../UserContext';
  
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -23,6 +24,7 @@ const Login = () => {
   const [password, SetPassword ] = useState('');
   const [email, SetEmail] = useState('');
   const navigate = useNavigate();
+  const {setUserInfo} = useContext(UserContext);
   
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -38,6 +40,9 @@ const Login = () => {
       
         if (res.ok) {
           res.json().then(info => {
+            console.log(info)
+          setUserInfo(info?.data);
+
             toast.success(info);
           })
           navigate("/");

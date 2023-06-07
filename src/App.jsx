@@ -6,8 +6,11 @@ import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { ThemeProvider } from '@mui/material/styles';
+import { UserContextProvider } from "./UserContext";
+
 function App() {
   return (
+    <UserContextProvider>
     <ThemeProvider theme={Theme}>
       <BrowserRouter> 
         <ToastContainer
@@ -24,8 +27,8 @@ theme="light"
 />
                 <Router/>
     </BrowserRouter>
-  </ThemeProvider>
-
+      </ThemeProvider>
+    </UserContextProvider>
   );
 }
 

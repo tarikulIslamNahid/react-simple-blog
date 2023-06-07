@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,16 +12,18 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { toast } from 'react-toastify';
 import { Link} from 'react-router-dom';
+import { UserContext } from '../UserContext';
 
 const Header = () => {
-  const [userEmail, setUserEmail] = useState(null);
+  const {setUserInfo,userInfo} = useContext(UserContext);
+  const UserEmail = userInfo?.email;
    useEffect(() => {
     fetch('http://localhost:8082/profile', {
       credentials:"include"
     })
       .then((res) => {
         res.json().then(info => {
-          setUserEmail(info.email)
+          setUserInfo(info);
      })
    })
    }, []);
@@ -31,7 +33,8 @@ const Header = () => {
       method:"POST"
     })
       .then((res) => {
-        setUserEmail(null)
+        setUserInfo(null);
+
         toast.success("logout successfully!");
 
     })
@@ -150,7 +153,7 @@ const Header = () => {
           </Typography>
           <Box justifyContent={"end"} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map((page,index) => {
-                  if (userEmail!= null && page.auth) {
+                  if (UserEmail!= null && page.auth) {
                     return   <Button
                     key={index}
                     onClick={handleCloseNavMenu}
@@ -158,7 +161,7 @@ const Header = () => {
                   >
                     {page.link}
                   </Button>
-                  } else if(!userEmail && !page.auth){
+                  } else if(!UserEmail && !page.auth){
                     return   <Button
                     key={index}
                     onClick={handleCloseNavMenu}
